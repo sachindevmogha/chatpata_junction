@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aachar Bazaar - Authentic Indian Pickles</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6a00 50%, #ff4500 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #FFF8DC;
+            font-weight: 600;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:hover {
+            color: #FFD700;
+        }
+
+        .cart-btn {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #8B4513;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-size: 1rem;
+        }
+
+        .cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #DC143C;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: white;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,0 Q300,60 600,30 T1200,0 L1200,120 L0,120 Z" fill="%23ffffff" opacity="0.1"/></svg>') no-repeat bottom;
+            background-size: 100% 120px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+            color: #FFF8DC;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            font-weight: 500;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: linear-gradient(135deg, #FFF8DC 0%, #FAEBD7 100%);
+            border: 3px solid #D2691E;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: #8B4513;
+            font-size: 1rem;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #8B4513;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+        }
+
+        .products {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: #FFF8DC;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(139, 69, 19, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 3px solid #D2691E;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: 0 15px 40px rgba(139, 69, 19, 0.5);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #FFE4B5 0%, #FFDAB9 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-img::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(139, 69, 19, 0.1) 80%);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #8B4513;
+        }
+
+        .product-category {
+            color: #FF6347;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .product-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .product-weight {
+            color: #8B4513;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #DC143C;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background: linear-gradient(135deg, #32CD32 0%, #228B22 100%);
+            color: white;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(34, 139, 34, 0.3);
+        }
+
+        .add-to-cart:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(34, 139, 34, 0.5);
+        }
+
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-content {
+            background: linear-gradient(135deg, #FFF8DC 0%, #FAEBD7 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+            border: 3px solid #D2691E;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            color: #8B4513;
+        }
+
+        .cart-header h2 {
+            font-size: 2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: #8B4513;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #DC143C;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem;
+            border-bottom: 2px solid #D2691E;
+            background: white;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: bold;
+            color: #8B4513;
+            font-size: 1.1rem;
+        }
+
+        .cart-item-details {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        .remove-btn {
+            background: linear-gradient(135deg, #DC143C 0%, #B22222 100%);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .remove-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(220, 20, 60, 0.4);
+        }
+
+        .cart-total {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 1.5rem;
+            color: #DC143C;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #D2691E;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #8B4513;
+            border: none;
+            padding: 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.4);
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 165, 0, 0.6);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: #8B4513;
+            font-size: 1.2rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #DC143C;
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">🫙 आचार बाज़ार</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="cart-btn" onclick="toggleCart()">
+                🛒 Cart
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>🌶️ Authentic Indian Pickles 🌶️</h1>
+        <p>Homemade taste, delivered to your doorstep</p>
+    </div>
+
+    <div class="categories">
+        <button class="category-btn active" onclick="filterCategory('all')">🍽️ All Pickles</button>
+        <button class="category-btn" onclick="filterCategory('mango')">🥭 Mango</button>
+        <button class="category-btn" onclick="filterCategory('mixed')">🥗 Mixed</button>
+        <button class="category-btn" onclick="filterCategory('chilli')">🌶️ Chilli</button>
+        <button class="category-btn" onclick="filterCategory('lemon')">🍋 Lemon</button>
+        <button class="category-btn" onclick="filterCategory('special')">⭐ Special</button>
+    </div>
+
+    <div class="products" id="productsContainer"></div>
+
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>🛒 Your Cart</h2>
+                <button class="close-btn" onclick="toggleCart()">×</button>
+            </div>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal"></div>
+            <button class="checkout-btn" onclick="checkout()">🛍️ Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: 'Aam ka Aachar', category: 'mango', price: 249, icon: '🥭', weight: '500g', desc: 'Traditional raw mango pickle with authentic spices', hot: true },
+            { id: 2, name: 'Sweet Mango Pickle', category: 'mango', price: 299, icon: '🥭', weight: '500g', desc: 'Sweet and tangy mango preserve' },
+            { id: 3, name: 'Nimbu ka Aachar', category: 'lemon', price: 199, icon: '🍋', weight: '400g', desc: 'Zesty lemon pickle with mustard oil', hot: true },
+            { id: 4, name: 'Mixed Vegetable Pickle', category: 'mixed', price: 229, icon: '🥗', weight: '500g', desc: 'Carrot, cauliflower, and more' },
+            { id: 5, name: 'Mirchi ka Aachar', category: 'chilli', price: 189, icon: '🌶️', weight: '300g', desc: 'Fiery green chilli pickle', hot: true },
+            { id: 6, name: 'Garlic Pickle', category: 'special', price: 279, icon: '🧄', weight: '400g', desc: 'Lahsun ka aachar - aromatic and flavorful' },
+            { id: 7, name: 'Gongura Pickle', category: 'special', price: 259, icon: '🌿', weight: '400g', desc: 'Andhra style sorrel leaves pickle', hot: true },
+            { id: 8, name: 'Ginger Pickle', category: 'special', price: 219, icon: '🫚', weight: '350g', desc: 'Adrak ka aachar with traditional spices' },
+            { id: 9, name: 'Avakaya Mango', category: 'mango', price: 319, icon: '🥭', weight: '500g', desc: 'Spicy Andhra style mango pickle', hot: true },
+            { id: 10, name: 'Kerda Sangri', category: 'special', price: 349, icon: '🌵', weight: '400g', desc: 'Rajasthani desert beans pickle' },
+            { id: 11, name: 'Mix Fruit Pickle', category: 'mixed', price: 289, icon: '🍊', weight: '500g', desc: 'Blend of seasonal fruits' },
+            { id: 12, name: 'Red Chilli Pickle', category: 'chilli', price: 199, icon: '🌶️', weight: '300g', desc: 'Lal mirch ka aachar', hot: true },
+            { id: 13, name: 'Amla Pickle', category: 'special', price: 239, icon: '🟢', weight: '400g', desc: 'Indian gooseberry pickle - healthy choice' },
+            { id: 14, name: 'Lemon & Chilli Mix', category: 'lemon', price: 249, icon: '🍋', weight: '400g', desc: 'Perfect spicy-tangy combination', hot: true },
+            { id: 15, name: 'Onion Pickle', category: 'mixed', price: 209, icon: '🧅', weight: '350g', desc: 'Pyaz ka aachar - sweet and sour' }
+        ];
+
+        let cart = [];
+        let currentFilter = 'all';
+
+        function displayProducts() {
+            const container = document.getElementById('productsContainer');
+            const filtered = currentFilter === 'all' 
+                ? products 
+                : products.filter(p => p.category === currentFilter);
+
+            container.innerHTML = filtered.map(product => `
+                <div class="product-card">
+                    <div class="product-img">${product.icon}</div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category.toUpperCase()}${product.hot ? '<span class="badge">HOT 🔥</span>' : ''}</div>
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-desc">${product.desc}</div>
+                        <div class="product-weight">Weight: ${product.weight}</div>
+                        <div class="product-price">₹${product.price}</div>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">
+                            🛒 Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(category) {
+            currentFilter = category;
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            displayProducts();
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartCount();
+            showNotification('✅ Added to cart!');
+        }
+
+        function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+            displayCart();
+        }
+
+        function displayCart() {
+            const cartItems = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">🫙 Your cart is empty<br>Add some delicious pickles!</div>';
+                document.getElementById('cartTotal').textContent = '';
+                return;
+            }
+
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.icon} ${item.name}</div>
+                        <div class="cart-item-details">₹${item.price} × ${item.quantity} = ₹${(item.price * item.quantity).toFixed(2)}</div>
+                        <div class="cart-item-details">${item.weight}</div>
+                    </div>
+                    <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cartTotal').innerHTML = `<strong>Total Amount:</strong> ₹${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartCount();
+            displayCart();
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('🫙 Your cart is empty!');
+                return;
+            }
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            alert(`🎉 Thank you for your order!\n\nTotal: ₹${total.toFixed(2)}\n\nYour delicious pickles will be delivered soon!`);
+            cart = [];
+            updateCartCount();
+            toggleCart();
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = 'position:fixed;top:100px;right:20px;background:#32CD32;color:white;padding:1rem 2rem;border-radius:10px;z-index:3000;font-weight:bold;box-shadow:0 4px 15px rgba(0,0,0,0.3);animation:slideIn 0.3s;';
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
+        }
+
+        displayProducts();
+    </script>
+</body>
+</html>
